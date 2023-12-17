@@ -1,5 +1,5 @@
 const urlGET = 'https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/8WNv70IZopewNg7O8fju/scores/';
-const urlPOST = 'https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/8WNv70IZopewNg7O8fju/scores/';
+//const urlPOST = 'https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/8WNv70IZopewNg7O8fju/scores/';
 
 const sc = document.getElementById('sc');
 const scoresList = document.getElementById('scoresList');
@@ -26,14 +26,38 @@ const fetchData = () => {
         });
 };
 
+// const displayScores = (scores) => {
+//     console.log('Displaying scores:', scores);
+//     scoresList.innerHTML = '';
+
+//     scores.forEach((score) => {
+//         console.log('Score:', score); // Log the score object
+//         const listItem = document.createElement('li');
+//         listItem.textContent = `${score.user}: ${score.score}`;
+
+//         const deleteButton = document.createElement('button');
+//         deleteButton.textContent = 'Delete';
+//         deleteButton.addEventListener('click', () => deleteScore(score.id)); // Make sure score.id is defined
+//         listItem.appendChild(deleteButton);
+
+//         scoresList.appendChild(listItem);
+//     });
+// };
+
 const displayScores = (scores) => {
-    console.log('Displaying scores:', scores);
+    // console.log('Displaying scores:', scores);
     scoresList.innerHTML = '';
 
-    scores.forEach((score) => {
+    scores.forEach((score, index) => {
+        
+        const randomId = Math.floor(Math.random() * 1000);
+
+        score.id = randomId;
+
+        // console.log('Score:', score);
+
         const listItem = document.createElement('li');
         listItem.textContent = `${score.user}: ${score.score}`;
-
 
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Delete';
@@ -44,8 +68,41 @@ const displayScores = (scores) => {
     });
 };
 
+
+// const deleteScore = (scoreId) => {
+//     if (!scoreId) {
+//         console.error('Invalid scoreId:', scoreId);
+//         return;
+//     }
+
+//     fetch(`${urlGET}/${scoreId}`, {
+//         method: 'DELETE',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//     })
+//     .then((response) => {
+//         if (!response.ok) {
+//             throw new Error('Network Response was not OK');
+//         }
+//         return response.json();
+//     })
+//     .then((responseData) => {
+//         console.log('Score deleted successfully:', responseData);
+//         fetchData(); // Fetch and display updated scores after deleting
+//     })
+//     .catch((error) => {
+//         console.error('Error deleting score:', error);
+//     });
+// };
+
 const deleteScore = (scoreId) => {
-    fetch(`${urlGET}${scoreId}`, {
+    if (!scoreId) {
+        console.error('Invalid scoreId:', scoreId);
+        return;
+    }
+
+    fetch(`${urlGET}/${scoreId}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -65,6 +122,9 @@ const deleteScore = (scoreId) => {
         console.error('Error deleting score:', error);
     });
 };
+
+
+
 
 
 const submitScore = () => {
